@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags%}
+
+{% block title %}Crud{% endblock %}
+
+{% block content %}
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <th>Tarefa</th>
+            <th>Atualizar</th>
+            <th>Deletar</th>
+        </thead>
+        <tbody>
+            {% for tarefa in tarefas_lista%}
+            <tr>
+                <td>{{tarefa.descricao}}</td>
+                <td><a href="/done/{{tarefa.id}}" class="btn btn-warning btn-sm" role="button">Concluir</a></td>
+                <td><button class="btn btn-danger">Excluir</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="divForm">
+        <form onsubmit="" method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-success" value="Enviar"/>
+        </form>
+    </div>
+{% endblock %}

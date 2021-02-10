@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+    <header>
+        <nav class="navbar navbar-expand navbar-dark bg-dark mb-3">
+            <div class="container">
+                <h3 class="titulo-apenas">Desafio Django</h3>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_logout' %}">Sair</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_login' %}">Entrar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_signup' %}">Cadastro</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
