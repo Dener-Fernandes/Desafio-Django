@@ -6,14 +6,6 @@ from . import models, forms
 
 def TarefaPageView(request):
     if request.user.is_authenticated:
-        # form = forms.TarefaForm()
-        # data_dict = {'form': form}
-        # if request.method == 'POST':
-        #     form = forms.TarefaForm(request.POST)
-        #     if form.is_valid():
-        #         form.save(commit=True)
-        #     else:
-        #         print('Erro!!!!')
         tarefas_lista = models.Tarefa.objects.order_by('descricao')
         data_dict = {
         'tarefas_lista': tarefas_lista,
@@ -22,18 +14,74 @@ def TarefaPageView(request):
     else:
         return redirect('/')
 
-def done(request, tarefa_id):
-    user = User.objects.get(id=request.session['user_id'])
-    tarefa = models.Tarefa.objects.get(id=tarefa_id)
 
-    tarefa.status_tarefa.remove(user)
+def CriarTarefaPageView(request):
+    if request.user.is_authenticated:
+        return render(request, 'criar_tarefa.html')
+    else:
+        return redirect('/')
 
-    # Recuperando os objetos das duas tabelas?
-    tarefas_lista = user.tarefa_adicionada.all()
+def AdicionarTarefa(request):
+    if request.method == 'POST':
+        if len(request.POST['descricao']) < 4:
+            return render(request, 'criar_tarefa.html')
+        else:
+            usuario_tarefa = User.objects.get(id = request.session['_auth_user_id'])
+            nova_tarefa = models.Tarefa.objects.create(
+                descricao = request.POST['descricao'],
+                # status_tarefa = usuario_tarefa,
+                usuario_tarefa = usuario_tarefa
+            )
+            return redirect('/tarefas')
+
+def AtualizarTarefaPageView(request, tarefa_id):
+    if request.user.is_authenticated:
+        tarefa = models.Tarefa.objects.get(id = tarefa_id)
+        data_dict = {'tarefa': tarefa}
+        return render(request, 'atualizar_tarefa.html', data_dict)
+    else:
+        return redirect('/')
+
+def AtualizarTarefa(request, tarefa_id):
+    if request.method == 'POST':
+        tarefa = models.Tarefa.objects.get(id = tarefa_id)
+        if len(request.POST['descricao']) < 4:
+            data_dict = {'tarefa': tarefa}
+            return render(request, 'atualizar_tarefa.html', data_dict)
+        else:
+            tarefa.descricao = request.POST['descricao']
+            tarefa.save()
+            return redirect('/tarefas')
+    
+def ExcluirTarefaPageView(request, tarefa_id):
+    if request.user.is_authenticated:
+        tarefa = models.Tarefa.objects.get(id = tarefa_id)
+        data_dict = {'tarefa': tarefa}
+        return render(request, 'excluir_tarefa.html', data_dict)
+    else:
+        return redirect('/')
+
+def ExcluirTarefa(request, tarefa_id):
+    tarefa = models.Tarefa.objects.get(id = tarefa_id)
+    tarefa.delete()
+    return redirect('/tarefas')
+
+def ConcluirTarefa(request, tarefa_id):
+    usuario_tarefa = User.objects.get(id = request.session['_auth_user_id'])
+    tarefa = models.Tarefa.objects.get(id = tarefa_id)
+
+    tarefa.status_tarefa.remove(usuario_tarefa)
+
+    tarefa.tarefa_adicionada.all()
+
+    data_dict = {'tarefa': tarefa}
+
+    return ('/tarefas', data_dict)
 
 
-    data_dict = {
-        'tarefas_lista': tarefas_lista,
-    }
 
-    return redirect('/tarefas', data_dict)
+
+
+
+
+

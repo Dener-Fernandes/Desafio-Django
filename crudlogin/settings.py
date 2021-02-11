@@ -155,3 +155,4 @@ ACCOUNT_UNIQUE_EMAIL = True
 
 # Indicando que o bootstrap 4 será o framework a ser utilizado.
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+

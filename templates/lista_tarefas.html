@@ -8,24 +8,19 @@
     <table class="table table-bordered">
         <thead class="thead-light">
             <th>Tarefa</th>
-            <th>Atualizar</th>
-            <th>Deletar</th>
+            <th>Opções</th>
         </thead>
         <tbody>
-            {% for tarefa in tarefas_lista%}
+            {% for tarefa in minhas_tarefas%}
             <tr>
                 <td>{{tarefa.descricao}}</td>
-                <td><a href="/done/{{tarefa.id}}" class="btn btn-warning btn-sm" role="button">Concluir</a></td>
-                <td><button class="btn btn-danger">Excluir</button></td>
+                <td>
+                    <a href="/tarefas/atualizar_tarefa_pagina/{{tarefa.id}}" class="btn btn-success" role="button">Atualizar</a>
+                    <a href="/tarefas/excluir_tarefa_pagina/{{tarefa.id}}" class="btn btn-danger" role="button">Excluir</a>
+                    <a href="/tarefas/concluir_tarefa/{{tarefa}}" class="btn btn-primary" role="button">Concluir</a>
+                </td>            
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <div class="divForm">
-        <form onsubmit="" method="POST">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <input type="submit" class="btn btn-success" value="Enviar"/>
-        </form>
-    </div>
 {% endblock %}
