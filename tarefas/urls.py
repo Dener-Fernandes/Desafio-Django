@@ -11,5 +11,5 @@ urlpatterns = [
     path('atualizar_tarefa/<int:tarefa_id>', views.AtualizarTarefa, name='atualizar_tarefa'),
     path('excluir_tarefa_pagina/<int:tarefa_id>', views.ExcluirTarefaPageView, name='excluir_tarefas_pagina'),
     path('excluir_tarefa/<int:tarefa_id>', views.ExcluirTarefa, name='excluir_tarefa'),
-    path('concluir_tarefa/<tarefa>', views.ConcluirTarefa, name='concluir_tarefa'),
+    path('concluir_tarefa/<int:tarefa_id>', views.ConcluirTarefa, name='concluir_tarefa'),
 ]

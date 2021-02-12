@@ -6,17 +6,17 @@
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/tarefas/criar_tarefas">Criar Tarefa</a>
+                            <a href="/tarefas/criar_tarefas" class="btn btn-warning mr-2">Criar Tarefa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_logout' %}">Sair</a>
+                            <a href="{% url 'account_logout' %}" class="nav-link">Sair</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_login' %}">Entrar</a>
+                            <a href="{% url 'account_login' %}" class="nav-link">Entrar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_signup' %}">Cadastro</a>
+                            <a href="{% url 'account_signup' %}" class="nav-link">Cadastro</a>
                         </li>
                     {% endif %}
                 </ul>

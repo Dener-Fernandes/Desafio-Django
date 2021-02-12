@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load crispy_forms_tags%}
+{% load crispy_forms_tags %}
 
 {% block title %}Crud{% endblock %}
 
@@ -11,13 +11,19 @@
             <th>Opções</th>
         </thead>
         <tbody>
-            {% for tarefa in minhas_tarefas%}
+            {% for tarefa in tarefas_lista %}
             <tr>
-                <td>{{tarefa.descricao}}</td>
+                {% if tarefa.status_tarefa == 'REALIZADA' %}
+                    <td><p class="realizada">{{tarefa.descricao}}</p></td>
+                {% else %}
+                    <td><p>{{tarefa.descricao}}</p></td>
+                {% endif %}
                 <td>
                     <a href="/tarefas/atualizar_tarefa_pagina/{{tarefa.id}}" class="btn btn-success" role="button">Atualizar</a>
                     <a href="/tarefas/excluir_tarefa_pagina/{{tarefa.id}}" class="btn btn-danger" role="button">Excluir</a>
-                    <a href="/tarefas/concluir_tarefa/{{tarefa}}" class="btn btn-primary" role="button">Concluir</a>
+                    {% if tarefa.status_tarefa != 'REALIZADA' %}
+                        <a href="/tarefas/concluir_tarefa/{{tarefa.id}}" class="btn btn-primary" role="button">Concluir</a>
+                    {% endif %}
                 </td>            
             </tr>
             {% endfor %}

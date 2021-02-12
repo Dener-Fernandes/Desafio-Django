@@ -1,15 +1,16 @@
-.divForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 .titulo-apenas {
     color: white;
 }
-/* #id_status_tarefa{
-    display: inline;
-    margin-top: 5px;
-} */
+
+.realizada {
+    text-decoration: line-through;
+}
+
+.bem-vindo {
+    display: flex;
+    justify-content: center;
+    margin-top: 200px;
+}
+
+
 

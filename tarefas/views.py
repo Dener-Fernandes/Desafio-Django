@@ -6,7 +6,8 @@ from . import models, forms
 
 def TarefaPageView(request):
     if request.user.is_authenticated:
-        tarefas_lista = models.Tarefa.objects.order_by('descricao')
+        usuario_tarefa = User.objects.get(id = request.session['_auth_user_id'])
+        tarefas_lista = models.Tarefa.objects.filter(usuario_tarefa = usuario_tarefa)
         data_dict = {
         'tarefas_lista': tarefas_lista,
         }
@@ -23,13 +24,13 @@ def CriarTarefaPageView(request):
 
 def AdicionarTarefa(request):
     if request.method == 'POST':
-        if len(request.POST['descricao']) < 4:
+        if len(request.POST['descricao']) < 4 or len(request.POST['descricao']) > 30:
             return render(request, 'criar_tarefa.html')
         else:
             usuario_tarefa = User.objects.get(id = request.session['_auth_user_id'])
             nova_tarefa = models.Tarefa.objects.create(
                 descricao = request.POST['descricao'],
-                # status_tarefa = usuario_tarefa,
+                status_tarefa = 'PENDENTE',
                 usuario_tarefa = usuario_tarefa
             )
             return redirect('/tarefas')
@@ -45,11 +46,13 @@ def AtualizarTarefaPageView(request, tarefa_id):
 def AtualizarTarefa(request, tarefa_id):
     if request.method == 'POST':
         tarefa = models.Tarefa.objects.get(id = tarefa_id)
-        if len(request.POST['descricao']) < 4:
+        if len(request.POST['descricao']) < 4 or len(request.POST['descricao']) > 30:
             data_dict = {'tarefa': tarefa}
             return render(request, 'atualizar_tarefa.html', data_dict)
         else:
             tarefa.descricao = request.POST['descricao']
+            if tarefa.status_tarefa == 'REALIZADA':
+                tarefa.status_tarefa = 'PENDENTE'
             tarefa.save()
             return redirect('/tarefas')
     
@@ -67,16 +70,13 @@ def ExcluirTarefa(request, tarefa_id):
     return redirect('/tarefas')
 
 def ConcluirTarefa(request, tarefa_id):
-    usuario_tarefa = User.objects.get(id = request.session['_auth_user_id'])
     tarefa = models.Tarefa.objects.get(id = tarefa_id)
 
-    tarefa.status_tarefa.remove(usuario_tarefa)
+    tarefa.status_tarefa = 'REALIZADA'
+    tarefa.save()
+    return redirect('/tarefas')
+    
 
-    tarefa.tarefa_adicionada.all()
-
-    data_dict = {'tarefa': tarefa}
-
-    return ('/tarefas', data_dict)
 
 
 
